@@ -1,2 +1,1 @@
-# local-panda
-test
+#基于NUXT的SITE
