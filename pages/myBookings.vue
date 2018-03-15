@@ -126,8 +126,11 @@
 	export default {
 
 		name: 'MyBookings',
-		data() {
-			return {
+
+		async asyncData({ route, store, error, apiBasePath, redirect }) {
+			let menu = route.query.menu || 0;
+			let flag = route.query.flag || 1;
+			let data = {
 				activityList:'',
 				logIn: '',
 				bookList: '',
@@ -136,16 +139,19 @@
 				alertTitle: '',
 				orderId: '',
 				url: '',
-				businessType:''
-				
+				businessType:'',
+				apiBasePath
 			}
+			return data;
 		},
+
 		components: {
 			MenuTab,
 			HeaderCommon,
 			FooterCommon,
 			Refund
 		},
+
 		methods: {
 			getShowConfirmFn(val) {
 				this.isShowAlertTitle = val;
@@ -171,7 +177,7 @@
 			},
 			downLoad(index) {
 				var node = document.getElementById("downNode");
-				var html = '<form method="POST" target="_blank" action="https://www.localpanda.com/api/order/contract/download">' +
+				var html = '<form method="POST" target="_blank" action="'+ this.apiBasePath + 'order/contract/download">' +
 					'<input name="orderId" type="hidden"  value="' + this.bookList[index].orderId + '">' +
 					'</form>';
 				node.innerHTML = html;
@@ -214,7 +220,7 @@
 				 obj=JSON.parse(localStorage.getItem("obj"))
 			}
 			
-			that.axios.post("https://www.localpanda.com/api/activity/order/list", JSON.stringify(obj), {
+			that.axios.post(this.apiBasePath + "activity/order/list", JSON.stringify(obj), {
 				headers: {
 					'Content-Type': 'application/json; charset=UTF-8'
 				}
@@ -222,7 +228,7 @@
 				console.log(response.data)
 				that.activityList=response.data
 			}, function(response) {})
-			that.axios.post("https://www.localpanda.com/api/order/list", JSON.stringify(obj), {
+			that.axios.post(this.apiBasePath + "order/list", JSON.stringify(obj), {
 				headers: {
 					'Content-Type': 'application/json; charset=UTF-8'
 				}

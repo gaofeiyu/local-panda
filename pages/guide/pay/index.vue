@@ -111,6 +111,7 @@ export default {
 
     return data;
   },
+  
   components: {
     HeaderCommon,
     FooterCommon,
